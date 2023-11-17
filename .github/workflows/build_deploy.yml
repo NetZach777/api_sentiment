@@ -26,19 +26,11 @@ jobs:
       with:
         python-version: "3.10"
 
-    # Ajoutez cette étape pour imprimer le répertoire de travail et lister les fichiers
-    - name: Print working directory and list files
-      run: |
-        echo "Le répertoire de travail actuel est :"
-        pwd
-        echo "Liste des fichiers et dossiers :"
-        ls -R
-
+    
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install flake8 pytest
-        cd sentiment-analysis
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
     - name: Lint with flake8
