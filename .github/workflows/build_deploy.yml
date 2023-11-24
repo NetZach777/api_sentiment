@@ -28,10 +28,10 @@ jobs:
       with:
         lfs: true # Assure que Git LFS est utilisé lors du checkout
 
-    - name: Configuration de Python 3.9.18
+    - name: Configuration de Python 3.10
       uses: actions/setup-python@v2
       with:
-        python-version: " python=3.9.18" # Configure l'environnement Python pour la version 3.9
+        python-version: " python=3.10" # Configure l'environnement Python pour la version 3.9
 
     - name: Installation des dépendances Python
       run: |
