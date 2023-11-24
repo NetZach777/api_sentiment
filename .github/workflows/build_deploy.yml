@@ -1,6 +1,3 @@
-# This workflow will install Python dependencies, run tests, and deploy to EC2 with a single version of Python.
-# For more information, see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
-
 name: Python application CI/CD
 
 # Déclenchez ce workflow lorsque des modifications sont poussées ou des pull requests sont créées sur la branche "main".
@@ -21,15 +18,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Installation de Git LFS
+    - name: Install Git LFS
       run: |
-        # Installez Git LFS
+        # Install Git LFS
         sudo apt-get install git-lfs
-        # Initialisez Git LFS dans le référentiel
+        # Initialize Git LFS in the repository
         git lfs install
 
-    - name: Checkout du code source
+    - name: Checkout source code with Git LFS
       uses: actions/checkout@v2
+      with:
+        lfs: true
 
     - name: Configuration de Python 3.10
       uses: actions/setup-python@v2
@@ -65,4 +64,3 @@ jobs:
         SSH_AUTH_SOCK: /tmp/ssh_agent.sock
 
 # Fin du fichier YAML
-
