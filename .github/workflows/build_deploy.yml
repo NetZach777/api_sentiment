@@ -21,9 +21,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Installation de Git LFS
+      run: |
+        # Installez Git LFS
+        sudo apt-get install git-lfs
+        # Initialisez Git LFS dans le référentiel
+        git lfs install
+
     - name: Checkout du code source
       uses: actions/checkout@v2
-      
+
     - name: Configuration de Python 3.10
       uses: actions/setup-python@v2
       with:
@@ -58,3 +65,4 @@ jobs:
         SSH_AUTH_SOCK: /tmp/ssh_agent.sock
 
 # Fin du fichier YAML
+
