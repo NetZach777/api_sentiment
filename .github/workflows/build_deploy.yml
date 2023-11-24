@@ -56,9 +56,10 @@ jobs:
       run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
-          cd /home/ubuntu
-          git clone https://github.com/NetZach777/api_sentiment.git
-          ls 
+          cd /home/ubuntu/api_sentiment
+          git pull
+          conda activate env 
+          pip install -r requirements.txt
           '
 
 
