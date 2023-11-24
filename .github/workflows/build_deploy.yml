@@ -18,51 +18,63 @@ jobs:
     steps:
     - name: Installation de Git LFS
       run: |
-        # Installez Git LFS
+        # Installe Git Large File Storage pour gérer de gros fichiers
         sudo apt-get install git-lfs
-        # Initialisez Git LFS dans le référentiel
+        # Initialise Git LFS
         git lfs install
 
     - name: Checkout du code source
       uses: actions/checkout@v2
       with:
-        lfs: true
+        lfs: true # Assure que Git LFS est utilisé lors du checkout
 
     - name: Configuration de Python 3.10
       uses: actions/setup-python@v2
       with:
-        python-version: "3.10"
+        python-version: "3.10" # Configure l'environnement Python pour la version 3.10
 
     - name: Installation des dépendances Python
       run: |
+        # Met à jour pip et installe flake8 et pytest
         python -m pip install --upgrade pip
         pip install flake8 pytest
+        # Installe les dépendances listées dans requirements.txt, si ce fichier existe
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
     - name: Lint avec flake8
       run: |
+        # Utilise flake8 pour vérifier la qualité du code
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
     - name: Test avec pytest
       run: |
+        # Exécute les tests unitaires avec pytest
         pytest
 
-    - name: deploy sur ec2
+    - name: Deploy sur EC2
       env:
           PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-          HOSTNAME: ${{secrets.HOST}}
-          USER_NAME: ${{secrets.EC2_USER}}    
+          HOSTNAME: ${{ secrets.HOST }}
+          USER_NAME: ${{ secrets.EC2_USER }}    
       run: |
+          # Prépare la clé SSH privée pour la connexion à l'instance EC2
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          # Connexion SSH à l'instance EC2
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+          # Navigue au répertoire du projet
           cd /home/ubuntu/api_sentiment
+          # Met à jour le code source
           git pull
+          # Active l'environnement Conda
+          source ~/miniconda3/etc/profile.d/conda.sh
           conda activate env 
+          # Installe les dépendances Python nécessaires
           pip install -r requirements.txt
-          tmux 
-          uvicorn main:app --host 0.0.0.0 
+          # Lance le serveur Uvicorn en arrière-plan
+          nohup uvicorn main:app --host 0.0.0.0 &
           '
+
 
 
 
