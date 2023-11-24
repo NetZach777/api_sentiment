@@ -1,6 +1,5 @@
 name: Python application CI/CD
 
-# Déclenchez ce workflow lorsque des modifications sont poussées ou des pull requests sont créées sur la branche "main".
 on:
   push:
     branches:
@@ -14,18 +13,17 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - name: Install Git LFS
+    - name: Installation de Git LFS
       run: |
-        # Install Git LFS
+        # Installez Git LFS
         sudo apt-get install git-lfs
-        # Initialize Git LFS in the repository
+        # Initialisez Git LFS dans le référentiel
         git lfs install
 
-    - name: Checkout source code with Git LFS
+    - name: Checkout du code source
       uses: actions/checkout@v2
       with:
         lfs: true
@@ -50,17 +48,13 @@ jobs:
       run: |
         pytest
 
-    - name: Déploiement vers EC2
-      run: |
-        # Utilisation de la clé privée SSH depuis le secret
-        echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > my_private_key.pem
+    - name: Utilisation de la clé privée SSH depuis le secret
+      run: echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > id_rsa
 
-        # Copie des fichiers vers l'instance EC2 (exemple)
-        scp -i my_private_key.pem -r ./myapp ${{ secrets.EC2_USER }}@${{ secrets.HOST }}:${{ secrets.EC2_TARGET_PATH }}
+    - name: Copie des fichiers vers l'instance EC2
+      run: scp -i id_rsa -r ./myapp ${{ secrets.EC2_USER }}@${{ secrets.HOST }}:${{ secrets.EC2_TARGET_PATH }}
 
-        # Exécution de commandes de déploiement (exemple)
-        ssh -i my_private_key.pem ${{ secrets.EC2_USER }}@${{ secrets.HOST }} "cd ${{ secrets.EC2_TARGET_PATH }} && ./deploy.sh"
+    - name: Exécution de commandes de déploiement
+      run: ssh -i id_rsa ${{ secrets.EC2_USER }}@${{ secrets.HOST }} "cd ${{ secrets.EC2_TARGET_PATH }} && ./deploy.sh"
       env:
         SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-
-# Fin du fichier YAML
