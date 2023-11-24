@@ -48,5 +48,15 @@ jobs:
       run: |
         pytest
 
-    - name: Utilisation de la clé privée SSH depuis le secret
-      run: ssh -i "${{ secrets.EC2_SSH_PRIVATE_KEY }}" ubuntu@"${{ secrets.HOST }}"
+    - name: deploy sur ec2
+      env:
+          PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          HOSTNAME: ${{secrets.HOST}}
+          USER_NAME: ${{secrets.EC2_USER}}    
+      run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+
+
+
+          
