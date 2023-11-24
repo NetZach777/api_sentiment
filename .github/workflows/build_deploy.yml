@@ -28,10 +28,10 @@ jobs:
       with:
         lfs: true # Assure que Git LFS est utilisé lors du checkout
 
-    - name: Configuration de Python 3.10
+    - name: Configuration de Python 3.9.18
       uses: actions/setup-python@v2
       with:
-        python-version: " python=3.10" # Configure l'environnement Python pour la version 3.9
+        python-version: '3.9.18' # Configure l'environnement Python pour la version 3.9.18
 
     - name: Installation des dépendances Python
       run: |
@@ -67,14 +67,13 @@ jobs:
           # Met à jour le code source
           git pull
           # Active l'environnement Conda
-          source ~/miniconda3/etc/profile.d/conda.sh
+          source /home/ubuntu/miniconda3/etc/profile.d/conda.sh
           conda activate env 
           # Installe les dépendances Python nécessaires
           pip install -r requirements.txt
           # Lance le serveur Uvicorn en arrière-plan
           nohup uvicorn main:app --host 0.0.0.0 &
           '
-
 
 
 
