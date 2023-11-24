@@ -62,7 +62,7 @@ tqdm==4.66.1
 transformers==4.35.0
 typing-extensions==4.8.0
 urllib3==1.26.18
-uvicorn==0.24.0.post1
+uvicorn==0.24.0
 werkzeug==3.0.1
 wheel==0.41.2
 wrapt==1.14.1
