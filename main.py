@@ -6,11 +6,6 @@ import tensorflow as tf
 
 app = FastAPI()
 
-# Obtenez le chemin du répertoire actuel
-#current_directory = os.path.dirname(os.path.realpath(__file__))
-
-# Utilisez le chemin relatif pour accéder au modèle Roberta dans le répertoire du projet
-#MODEL_PATH = os.path.join(current_directory, "model", "roberta_model_V3")
 
 # tokenizer Hugging face
 tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
