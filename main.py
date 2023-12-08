@@ -25,7 +25,7 @@ def predict_sentiment(tweet: TweetRequest):
     inputs = tokenizer(tweet.text, return_tensors="tf", max_length=512, truncation=True, padding="max_length")
     outputs = model(inputs['input_ids'], attention_mask=inputs['attention_mask'])
     prediction = tf.argmax(outputs.logits, -1).numpy()[0]
-    # Assurez-vous que le modèle renvoie des prédictions binaires (0 ou 1)
+    # S'assurez que le modèle renvoie des prédictions binaires (0 ou 1)
     if prediction not in [0, 1]:
         raise HTTPException(status_code=500, detail="Model prediction was not 0 or 1.")
     sentiment = "positive" if prediction == 1 else "negative"
