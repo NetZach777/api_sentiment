@@ -28,7 +28,7 @@ def test_predict_sentiment_empty_text():
 
 # Teste la gestion de caractères non-ASCII
 def test_predict_sentiment_non_ascii():
-    response = client.post(API_ENDPOINT, json={"text": "J'adore FastAPI et les crêpes !"})
+    response = client.post(API_ENDPOINT, json={"text": "I like FastAPI and the crêpes !"})
     assert response.status_code == 200
     assert "sentiment" in response.json()
 
